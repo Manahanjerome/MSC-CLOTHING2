@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items>
+    <item>
+        <name>CEIIT T-Shirt</name>
+        <price>499</price>
+        <description>A shirt for the intramural event</description> 
+        <picture>images/society-shirt.jpeg</picture>
+    </item>
+    <item>
+        <name>CEIIT ID Lace</name>
+        <price>99</price>
+        <description>An ID lace</description>
+        <picture>images/idlace.jpeg</picture>
+    </item>
+    <item>
+        <name>CEIIT Jacket</name>
+        <price>899</price>
+        <description>A jacket for cold weather</description>
+         <picture>images/idjacket.jpeg</picture>
+    </item>
+     <item>
+        <name>CEIIT Cap</name>
+        <price>500</price>
+        <description>A cap for your selected sprots</description>
+         <picture>images/cap.jpeg</picture>
+    </item>
+</items>

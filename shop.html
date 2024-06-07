@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSC Clothing Shop</title>
+    <link rel="stylesheet" href="css/style.shop.css">
+    <script>
+         let cart = [];
+
+        function searchItems() {
+            const query = document.getElementById('search-bar').value;
+            if (query === '') {
+                document.getElementById('results').innerHTML = ''; // Clear previous results
+                return; // Exit the function if the search input is empty
+            }
+            fetch(`search.php?query=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    const resultsDiv = document.getElementById('results');
+                    resultsDiv.innerHTML = '';
+                    if (data.length > 0) {
+                        data.forEach(item => {
+                            const itemDiv = document.createElement('div');
+                            itemDiv.className = 'result-item';
+                            itemDiv.innerHTML = `
+                                <h3>${item.name}</h3>
+                                <p>Price: P ${item.price}</p>
+                                <p>${item.description}</p>
+                                 <img src="${item.picture}" alt="${item.name}" />
+                                 <div>
+                                 <button class="CartBtn" >
+                                 <span class="IconContainer"> 
+                                 <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512" fill="rgb(17, 17, 17)" class="cart"><path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"></path></svg>
+                                 </span>
+                                 <p class="text"onclick='addToCart(${JSON.stringify(item)})'>Add to Cart</p>
+                                 </button>
+                                 </div>
+                            `;
+                            resultsDiv.appendChild(itemDiv);
+                        });
+                    } else {
+                        resultsDiv.innerHTML = '<p>No results found</p>';
+                    }
+                });
+        }
+          function addToCart(item) {
+            cart.push(item);
+            alert(`Item "${item.name}" added to cart`);
+        }
+        function viewCart() {
+            const cartDiv = document.createElement('div');
+            cartDiv.id = 'cart';
+            cartDiv.innerHTML = ''; // Clear previous cart items
+            cart.forEach((item, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.classList.add('item');
+                itemDiv.innerHTML = `
+                    <h3>${item.name}</h3>
+                    <p>Price: ${item.price}</p>
+                    <p>${item.description}</p>
+                    <img src="${item.picture}" alt="${item.name}" />
+                    <div>
+                        <button onclick='removeFromCart(${index})'>Remove from Cart</button>
+                    </div>
+                `;
+                cartDiv.appendChild(itemDiv);
+            });
+            document.body.appendChild(cartDiv);
+        }
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            document.getElementById('cart').remove(); // Remove the current cart display
+            viewCart(); // Re-render the cart
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <div class="search-bar">
+            <input class="searchInput" id="search-bar" type="text" placeholder="Search something">
+            <button onclick="searchItems()" class="searchButton" >
+        <svg xmlns="http://www.w3.org/2000/svg" width="29" height="29" viewBox="0 0 29 29" fill="none">
+        <g clip-path="url(#clip0_2_17)">
+        <g filter="url(#filter0_d_2_17)">
+        <path d="M23.7953 23.9182L19.0585 19.1814M19.0585 19.1814C19.8188 18.4211 20.4219 17.5185 20.8333 16.5251C21.2448 15.5318 21.4566 14.4671 21.4566 13.3919C21.4566 12.3167 21.2448 11.252 20.8333 10.2587C20.4219 9.2653 19.8188 8.36271 19.0585 7.60242C18.2982 6.84214 17.3956 6.23905 16.4022 5.82759C15.4089 5.41612 14.3442 5.20435 13.269 5.20435C12.1938 5.20435 11.1291 5.41612 10.1358 5.82759C9.1424 6.23905 8.23981 6.84214 7.47953 7.60242C5.94407 9.13789 5.08145 11.2204 5.08145 13.3919C5.08145 15.5634 5.94407 17.6459 7.47953 19.1814C9.01499 20.7168 11.0975 21.5794 13.269 21.5794C15.4405 21.5794 17.523 20.7168 19.0585 19.1814Z" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" shape-rendering="crispEdges"></path>
+        </g>
+        </g>
+        <defs>
+        <filter id="filter0_d_2_17" x="-0.418549" y="3.70435" width="29.7139" height="29.7139" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+        <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"></feColorMatrix>
+        <feOffset dy="4"></feOffset>
+        <feGaussianBlur stdDeviation="2"></feGaussianBlur>
+        <feComposite in2="hardAlpha" operator="out"></feComposite>
+        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"></feColorMatrix>
+        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2_17"></feBlend>
+        <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2_17" result="shape"></feBlend>
+        </filter>
+        <clipPath id="clip0_2_17">
+        <rect width="28.0702" height="28.0702" fill="white" transform="translate(0.403503 0.526367)"></rect>
+        </clipPath>
+        </defs>
+        </svg>
+            </button>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="home.html">Home</a></li>
+                <li><b href="shop.html">Shop</b></li>
+                <li><a href="collection.html">Collection</a></li>
+                <li><a href="aboutus2.html">About Us</a></li>
+                <li><a href="help.html">Help</a></li>
+            </ul>
+            <div class="profile-pic">
+                <a><img src="images/profileicon.jpg" alt="Profile Picture" onclick="toggleNav()"></a>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <style>
+        #results img {
+            max-width: 200px; /* Set the maximum width */
+            height: auto; /* Maintain the aspect ratio */
+        }
+        .item {
+            margin-bottom: 20px; /* Add spacing between items */
+        }
+        </style>
+        <div id="results"></div>
+       <div class="banner">
+            <h1>Find Your Desired School Attire</h1>
+        </div>
+        <div class="left-side-bar">
+                <ul>
+                    <li><b href="shop.html">New Collection</b></li>
+                    <br>
+                    <li><a href="shop2.html">Your Department</a></li>
+                    <br>
+                    <li><a href="shop3.html">Others</a></li>
+                </ul>
+        </div>
+        <section class="collection">
+            <div class="items">
+                <div class="item">
+                    <img src="images/polo.jpeg" alt="Uniform">
+                    <p>Uniform</p>
+                    <p>P 200.00</p>
+                    <button class="add-to-cart">add</button>
+                </div>
+                <div class="item">
+                    <img src="images/formal.jpeg" alt="Tuxedo">
+                    <p>Tuxedo</p>
+                    <p>P 400.00</p>
+                    <button class="add-to-cart">add</button>
+                </div>
+                <div class="item">
+                    <img src="images/pants.jpeg" alt="Women Nursing Uniform">
+                    <p>SLACKS FOR MEN </p>
+                    <p>P 300.00</p>
+                    <button class="add-to-cart">add</button>
+                </div>
+            </div>
+    </main>
+    <div id="profile-nav" class="profile-nav">
+        <div class="profile-nav-item">Edit</div>
+        <div class="profile-nav-item">To Ship</div>
+        <div class="profile-nav-item">To Pay</div>
+        <div class="profile-nav-item">Received</div>
+        <div class="profile-nav-item">Delivered</div>
+     </div>
+    <script src="navigation.js"></script>
+</body>
+</html>
